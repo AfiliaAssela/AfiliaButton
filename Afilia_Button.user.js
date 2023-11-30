@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Afilia Button
 // @version      1.0.0
-// @author       Archangel
+// @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
 // ==/UserScript==
@@ -9,6 +9,48 @@
 
 (async function() {
     'use strict';
+
+    function compareVersions(v1, v2) {
+        const versionParts1 = v1.split('.').map(Number);
+        const versionParts2 = v2.split('.').map(Number);
+
+        for (let i = 0; i < Math.max(versionParts1.length, versionParts2.length); i++) {
+            const part1 = versionParts1[i] || 0;
+            const part2 = versionParts2[i] || 0;
+
+            if (part1 < part2) {
+                return -1;
+            
+            } else if (part1 > part2) {
+                return 1;
+            }
+        }
+
+
+        return 0;
+    }
+
+
+    function openURL(url) {
+        window.open(url, '_blank');
+    }
+
+    const versionData = await new Promise((resolve) => {
+        GM_xmlhttpRequest({
+            method: 'GET',
+            url: 'https://afiliaassela.github.io/AfiliaButton/version.json',
+            responseType: 'json',
+            onload: (response) => resolve(response.response),
+
+        });
+    });
+
+    if (versionData && versionData.version && compareVersions(versionData.version, GM_info.script.version) > 0) {
+        const confirmation = confirm('Eine neue Version des Scriptes ist verfügbar, Link zum update öffnen?');
+        if (confirmation) {
+            openURL(versionData.updateURL);
+        }
+    }
 
     if(!sessionStorage.aVehicleTypesNew || JSON.parse(sessionStorage.aVehicleTypesNew).lastUpdate < (new Date().getTime() - 4 * 500 * 60)) {
             await $.getJSON("https://afiliaassela.github.io/AfiliaButton/vehicletype.json").done(data => sessionStorage.setItem('aVehicleTypesNew', JSON.stringify({lastUpdate: new Date().getTime(), value: data})) );
@@ -20,7 +62,7 @@
 
     var aVehicleTypes = JSON.parse(sessionStorage.aVehicleTypesNew).value;
     var aMissions = JSON.parse(sessionStorage.aMissions).value;
-    var config = localStorage.chiAConfig ? JSON.parse(localStorage.chiAConfig) : {"credits": 0, "vehicles": []};
+    var config = localStorage.AfiliaConfig ? JSON.parse(localStorage.AfiliaConfig) : {"credits": 0, "vehicles": []};
     var allianceMissions = [];
 
     GM_addStyle(`.modal {
@@ -42,23 +84,23 @@ overflow-y: auto;
 }`);
 
     $("body")
-        .prepend(`<div class="modal fade bd-example-modal-lg" id="chiAModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        .prepend(`<div class="modal fade bd-example-modal-lg" id="AfiliaModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&#x274C;</span>
                           </button>
-                          <h5 class="modal-title"><center>Booo!.</center></h5>
+                          <h5 class="modal-title"><center>Its cool man!</center></h5>
                           <div class="btn-group">
-                            <a class="btn btn-success btn-xs" id="chiAScan">Scan</a>
-                            <a class="btn btn-success btn-xs" id="chiAStart">Start</a>
-                            <a class="btn btn-success btn-xs" id="chiAPreferences">
+                            <a class="btn btn-success btn-xs" id="AfiliaScan">Scan</a>
+                            <a class="btn btn-success btn-xs" id="AfiliaStart">Start</a>
+                            <a class="btn btn-success btn-xs" id="AfiliaPreferences">
                               <div class="glyphicon glyphicon-cog" style="color:LightSteelBlue"></div>
                             </a>
                           </div>
                         </div>
-                          <div class="modal-body" id="chiAModalBody">
+                          <div class="modal-body" id="AfiliaModalBody">
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Schließen</button>
@@ -68,7 +110,7 @@ overflow-y: auto;
                   </div>`);
 
     $("#btn-group-mission-select")
-        .before(`<a id="chilloutArea" data-toggle="modal" data-target="#chiAModal" class="btn btn-success btn-xs">
+        .before(`<a id="chilloutArea" data-toggle="modal" data-target="#AfiliaModal" class="btn btn-success btn-xs">
                    <span class="glyphicon glyphicon-queen"></span> Was'n los hier?!
                  </a>`);
 
@@ -164,7 +206,7 @@ overflow-y: auto;
         intoTable += `</tbody>
                       </table>`;
 
-        $("#chiAModalBody").html(intoTable);
+        $("#AfiliaModalBody").html(intoTable);
     }
 
 async function alertVehicles() {
@@ -215,20 +257,20 @@ async function alertVehicles() {
     }
 
    $("body").on("click", "#chilloutArea", function() {
-        $("#chiAModalBody").html(`<center><img src="https://abload.de/img/halloween_2015_webm7cus.jpg" style="height:60%;width:60%"></center>`);
+        $("#AfiliaModalBody").html(`<center><img src="https://abload.de/img/csm_webseite_post_feuu2dv6.jpg" style="height:60%;width:60%"></center>`);
         allianceMissions.length = 0;
     });
 
-    $("body").on("click", "#chiAScan", async function() {
+    $("body").on("click", "#AfiliaScan", async function() {
         await scanMissions();
         await writeTable();
     });
 
-    $("body").on("click", "#chiAStart", function() {
+    $("body").on("click", "#AfiliaStart", function() {
         alertVehicles();
     });
 
-    $("body").on("click", "#chiAPreferences", function() {
+    $("body").on("click", "#AfiliaPreferences", function() {
         var arrVehicles = [];
 
         for(var i in aVehicleTypes) {
@@ -236,29 +278,29 @@ async function alertVehicles() {
         }
         arrVehicles.sort((a, b) => a.toUpperCase() > b.toUpperCase() ? 1 : -1);
 
-        $("#chiAModalBody")
-            .html(`<span>Einsätze ab </span><input type="text" class="form-control form-control-sm" value="${config.credits}" id="chiACredits" style="width:5em;height:22px;display:inline"><span> Credits anzeigen</span>
+        $("#AfiliaModalBody")
+            .html(`<span>Einsätze ab </span><input type="text" class="form-control form-control-sm" value="${config.credits}" id="AfiliaCredits" style="width:5em;height:22px;display:inline"><span> Credits anzeigen</span>
                    <br>
                    <br>
-                   <label for="chiAVehicleTypes">Fahrzeugtypen (Mehrfachauswahl mit Strg + Klick)</label>
-                   <select multiple class="form-control" id="chiAVehicleTypes" style="height:20em;width:40em"></select>
+                   <label for="AfiliaVehicleTypes">Fahrzeugtypen (Mehrfachauswahl mit Strg + Klick)</label>
+                   <select multiple class="form-control" id="AfiliaVehicleTypes" style="height:20em;width:40em"></select>
                    <br>
                    <br>
-                   <a class="btn btn-success" id="chiABtnSave">Speichern</a>`);
+                   <a class="btn btn-success" id="AfiliaBtnSave">Speichern</a>`);
 
         for(i in arrVehicles) {
-            $("#chiAVehicleTypes").append(`<option>${arrVehicles[i]}</option>`);
+            $("#AfiliaVehicleTypes").append(`<option>${arrVehicles[i]}</option>`);
         }
 
-        $("#chiAVehicleTypes").val(mapVehicles(config.vehicles, "name"));
+        $("#AfiliaVehicleTypes").val(mapVehicles(config.vehicles, "name"));
     });
 
-    $("body").on("click", "#chiABtnSave", function() {
-        config.credits = +$("#chiACredits").val();
-        config.vehicles = mapVehicles($("#chiAVehicleTypes").val(), "type");
-        localStorage.chiAConfig = JSON.stringify(config);
+    $("body").on("click", "#AfiliaBtnSave", function() {
+        config.credits = +$("#AfiliaCredits").val();
+        config.vehicles = mapVehicles($("#AfiliaVehicleTypes").val(), "type");
+        localStorage.AfiliaConfig = JSON.stringify(config);
 
-        $("#chiAModalBody").html("<h3><center>Einstellungen gespeichert</center></h3>");
+        $("#AfiliaModalBody").html("<h3><center>Einstellungen gespeichert</center></h3>");
     });
 
 })();
