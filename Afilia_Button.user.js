@@ -10,6 +10,7 @@
 (async function() {
     'use strict';
 
+    // Function to compare version numbers
     function compareVersions(v1, v2) {
         const versionParts1 = v1.split('.').map(Number);
         const versionParts2 = v2.split('.').map(Number);
@@ -20,35 +21,33 @@
 
             if (part1 < part2) {
                 return -1;
-            
             } else if (part1 > part2) {
                 return 1;
             }
         }
 
-
         return 0;
     }
 
-
-    function openURL(url) {
-        window.open(url, '_blank');
+    // Fetch version from JSON file using fetch
+    async function fetchVersionData() {
+        try {
+            const response = await fetch('https://afiliaassela.github.io/AfiliaButton/version.json');
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching version data:', error);
+            return null;
+        }
     }
 
-    const versionData = await new Promise((resolve) => {
-        GM_xmlhttpRequest({
-            method: 'GET',
-            url: 'https://afiliaassela.github.io/AfiliaButton/version.json',
-            responseType: 'json',
-            onload: (response) => resolve(response.response),
+    // Get the version data
+    const versionData = await fetchVersionData();
 
-        });
-    });
-
-    if (versionData && versionData.version && compareVersions(versionData.version, GM_info.script.version) > 0) {
-        const confirmation = confirm('Eine neue Version des Scriptes ist verfügbar, Link zum update öffnen?');
+    // Compare versions and redirect if a higher version is detected
+    if (versionData && versionData.version && compareVersions(versionData.version, GM.info.script.version) > 0) {
+        const confirmation = confirm(`A new version (${versionData.version}) is available. Do you want to open the update URL?`);
         if (confirmation) {
-            openURL(versionData.updateURL);
+            window.location.href = versionData.updateURL;
         }
     }
 
