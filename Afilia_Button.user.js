@@ -45,7 +45,7 @@
 
     // Compare versions and redirect if a higher version is detected
     if (versionData && versionData.version && compareVersions(versionData.version, GM.info.script.version) > 0) {
-        const confirmation = confirm(`A new version (${versionData.version}) is available. Do you want to open the update URL?`);
+        const confirmation = confirm(`Eine neue Version, Version: (${versionData.version}) ist Verfügbar. Willst du die Update URL öffnen?`);
         if (confirmation) {
             window.location.href = versionData.updateURL;
         }
