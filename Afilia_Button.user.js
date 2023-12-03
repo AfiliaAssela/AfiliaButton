@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.0.1
+// @version      1.0.2
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -45,7 +45,7 @@
 
     // Compare versions and redirect if a higher version is detected
     if (versionData && versionData.version && compareVersions(versionData.version, GM.info.script.version) > 0) {
-        const confirmation = confirm(`Eine neue Version, Version: (${versionData.version}) ist Verfügbar. Willst du die Update URL öffnen?`);
+        const confirmation = confirm(`Eine neue Version von Afilia Button, Version: (${versionData.version}) ist verfügbar. Willst du die Update URL öffnen?`);
         if (confirmation) {
             window.location.href = versionData.updateURL;
         }
