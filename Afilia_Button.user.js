@@ -40,6 +40,14 @@
         }
     }
 
+    function setTimeoutPreference(timeout) {
+        localStorage.AfiliaTimeout = timeout;
+    }
+
+    function getTimeoutPreference() {
+        return localStorage.AfiliaTimeout || 0;
+    }
+
     // Get the version data
     const versionData = await fetchVersionData();
 
@@ -212,7 +220,7 @@ async function alertVehicles() {
     var foundVehicles = [];
 
     for(var i in allianceMissions) {
-        await new Promise(resolve => setTimeout(resolve, 20));
+        await new Promise(resolve => setTimeout(resolve, getTimeoutPreference()));
         var mId = allianceMissions[i].id;
         $("#status_"+mId).text("suche ...");
         var mission = await $.get("/missions/"+mId, (data) => data);
@@ -281,6 +289,9 @@ async function alertVehicles() {
             .html(`<span>Einsätze ab </span><input type="text" class="form-control form-control-sm" value="${config.credits}" id="AfiliaCredits" style="width:5em;height:22px;display:inline"><span> Credits anzeigen</span>
                    <br>
                    <br>
+                   <label for="AfiliaTimeout">Timeout (ms): </label><input type="text" class="form-control form-control-sm" value="${getTimeoutPreference()}" id="AfiliaTimeout" style="width:5em;height:22px;display:inline"><span> ms</span>
+                   <br>
+                   <br>
                    <label for="AfiliaVehicleTypes">Fahrzeugtypen (Mehrfachauswahl mit Strg + Klick)</label>
                    <select multiple class="form-control" id="AfiliaVehicleTypes" style="height:20em;width:40em"></select>
                    <br>
@@ -298,6 +309,9 @@ async function alertVehicles() {
         config.credits = +$("#AfiliaCredits").val();
         config.vehicles = mapVehicles($("#AfiliaVehicleTypes").val(), "type");
         localStorage.AfiliaConfig = JSON.stringify(config);
+
+        var timeoutValue = $("#AfiliaTimeout").val();
+        setTimeoutPreference(timeoutValue);
 
         $("#AfiliaModalBody").html("<h3><center>Einstellungen gespeichert</center></h3>");
     });
