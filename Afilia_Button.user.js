@@ -251,14 +251,22 @@ async function alertVehicles() {
 
     function mapVehicles(arrClasses, trigger) {
         var returnValue = [];
-        if(trigger == "type") {
-            returnValue = $.map(arrClasses, function(item) {
-                return aVehicleTypes.filter((obj) => obj.short_name == item)[0].id;
-            });
-        } else if(trigger == "name") {
-            returnValue = $.map(arrClasses, function(item) {
-                return aVehicleTypes.filter((obj) => obj.id == item)[0].short_name;
-            });
+        if (arrClasses && arrClasses.length) {  // Check if arrClasses is not null and has length
+            if (trigger == "type") {
+                arrClasses.forEach(function (item) {
+                    var matchingVehicle = aVehicleTypes.find((obj) => obj.short_name === item);
+                    if (matchingVehicle) {
+                        returnValue.push(matchingVehicle.id);
+                    }
+                });
+            } else if (trigger == "name") {
+                arrClasses.forEach(function (item) {
+                    var matchingVehicle = aVehicleTypes.find((obj) => obj.id === item);
+                    if (matchingVehicle) {
+                        returnValue.push(matchingVehicle.short_name);
+                    }
+                });
+            }
         }
         return returnValue;
     }
