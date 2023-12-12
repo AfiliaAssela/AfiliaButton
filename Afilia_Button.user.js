@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.0.2
+// @version      1.0.3
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -251,7 +251,7 @@ async function alertVehicles() {
 
     function mapVehicles(arrClasses, trigger) {
         var returnValue = [];
-        if (arrClasses && arrClasses.length) {  // Check if arrClasses is not null and has length
+        if (arrClasses && arrClasses.length) { 
             if (trigger == "type") {
                 arrClasses.forEach(function (item) {
                     var matchingVehicle = aVehicleTypes.find((obj) => obj.short_name === item);
