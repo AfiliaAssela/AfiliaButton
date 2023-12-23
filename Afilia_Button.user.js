@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.0.3
+// @version      1.0.4
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -118,7 +118,7 @@ overflow-y: auto;
 
     $("#btn-group-mission-select")
         .before(`<a id="chilloutArea" data-toggle="modal" data-target="#AfiliaModal" class="btn btn-success btn-xs">
-                   <span class="glyphicon glyphicon-queen"></span> Was'n los hier?!
+                   <span class="glyphicon glyphicon-queen"></span> Einsatzbereit
                  </a>`);
 
     function scanMissions() {
@@ -272,7 +272,7 @@ async function alertVehicles() {
     }
 
    $("body").on("click", "#chilloutArea", function() {
-        $("#AfiliaModalBody").html(`<center><img src="https://abload.de/img/csm_webseite_post_feuu2dv6.jpg" style="height:60%;width:60%"></center>`);
+        $("#AfiliaModalBody").html(`<center><img src="https://feuerwehr-brelingen.de/wp/wp-content/uploads/2017/12/Weihnachten_2017.jpg" style="height:60%;width:60%"></center>`);
         allianceMissions.length = 0;
     });
 
