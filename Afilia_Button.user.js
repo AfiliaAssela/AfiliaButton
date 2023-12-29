@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.0.6
+// @version      1.0.7
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -134,7 +134,7 @@ overflow-y: auto;
                           <div class="btn-group">
                             <a class="btn btn-success btn-xs" id="AfiliaScan">Scan</a>
                             <a class="btn btn-success btn-xs" id="AfiliaStart">Start</a>
-                            <a class="btn btn-danger btn-xs" id"AfiliaStop">Stop</a>
+                            <a class="btn btn-danger btn-xs" id="AfiliaStop">Stop</a>
                             <a class="btn btn-success btn-xs" id="AfiliaPreferences">
                               <div class="glyphicon glyphicon-cog" style="color:LightSteelBlue"></div>
                             </a>
@@ -201,6 +201,9 @@ overflow-y: auto;
     }
 
     function writeTable() {
+        var sumCredits = 0; // Initialisiere Creditzähler und setze ihn auf 0
+        allianceMissions = allianceMissions.filter(e => e.credits >= config.credits);
+
         var intoTable =
             `<table class="table">
              <thead>
@@ -221,6 +224,8 @@ overflow-y: auto;
                 continue;
             }
 
+            sumCredits += e.credits; //Credits zur Summe hinzufügen
+
             intoTable +=
                 `<tr id="tr_${e.id}" class="alert alert-info">
                    <td class="col">
@@ -232,8 +237,14 @@ overflow-y: auto;
                  </tr>`;
         }
 
-        intoTable += `</tbody>
-                      </table>`;
+        intoTable += 
+            `<tr>
+               <td colspan="2" class="col">Durchschnittlicher Gesamtertrag:</td>
+               <td class="col-1">${sumCredits.toLocaleString()}</td>
+               <td class="col-1"></td>
+            </tr>
+            </tbody>
+            </table>`;
 
         $("#AfiliaModalBody").html(intoTable);
     }
