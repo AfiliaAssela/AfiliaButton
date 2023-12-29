@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.0.5
+// @version      1.0.6
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -48,6 +48,26 @@
         return localStorage.AfiliaTimeout || 0;
     }
 
+    // Save Modal State
+    function saveState() {
+        localStorage.AfiliaState = JSON.stringify({
+            config: config,
+            vehicles: aVehicleTypes,
+            missions: aMissions,
+            allianceMissions: allianceMissions
+        });
+    }
+    // Load Modal State
+    function loadState() {
+        const savedState = localStorage.AfiliaState;
+        if (savedState) {
+            const parsedState = JSON.parse(savedState);
+            config = parsedState.config;
+            aVehicleTypes = parsedState.vehicles;
+            aMissions = parsedState.missions;
+            allianceMissions = parsedState.allianceMissions;
+        }
+    }
     // Get the version data
     const versionData = await fetchVersionData();
 
@@ -55,9 +75,21 @@
     if (versionData && versionData.version && compareVersions(versionData.version, GM.info.script.version) > 0) {
         const confirmation = confirm(`Eine neue Version von Afilia Button, Version: (${versionData.version}) ist verfügbar. Willst du die Update URL öffnen?`);
         if (confirmation) {
-            window.location.href = versionData.updateURL;
+            window.location.href = versionData.updateURL1;
+            setTimeout(() => {
+                window.location.href = versionData.updateURL2;
+            }, 1000);
         }
     }
+
+    //Load Saved State
+    loadState();
+
+    let stopInProgress = false;
+
+    $("body").on("click", "#AfiliaStop", function() {
+        stopInProgress = true;
+    });
 
     if(!sessionStorage.aVehicleTypesNew || JSON.parse(sessionStorage.aVehicleTypesNew).lastUpdate < (new Date().getTime() - 4 * 500 * 60)) {
             await $.getJSON("https://afiliaassela.github.io/AfiliaButton/vehicletype.json").done(data => sessionStorage.setItem('aVehicleTypesNew', JSON.stringify({lastUpdate: new Date().getTime(), value: data})) );
@@ -98,10 +130,11 @@ overflow-y: auto;
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&#x274C;</span>
                           </button>
-                          <h5 class="modal-title"><center>Its cool man!</center></h5>
+                          <h5 class="modal-title"><center>Guten Rutsch ins Jahr 2024!</center></h5>
                           <div class="btn-group">
                             <a class="btn btn-success btn-xs" id="AfiliaScan">Scan</a>
                             <a class="btn btn-success btn-xs" id="AfiliaStart">Start</a>
+                            <a class="btn btn-danger btn-xs" id"AfiliaStop">Stop</a>
                             <a class="btn btn-success btn-xs" id="AfiliaPreferences">
                               <div class="glyphicon glyphicon-cog" style="color:LightSteelBlue"></div>
                             </a>
@@ -148,7 +181,7 @@ overflow-y: auto;
             var $this = $(this);
             var missionId = +$this.attr("id").replace(/\D+/g,"");
             if(!$("#mission_participant_new_"+missionId).hasClass("hidden")) {
-    var missionInfos = aMissions.filter((obj) => obj.id == +$this.attr("mission_type_id"))[0];
+                var missionInfos = aMissions.filter((obj) => obj.id == +$this.attr("mission_type_id"))[0];
                 var missionCredits = missionInfos ? (missionInfos.average_credits > 0 ? missionInfos.average_credits : 0) : 5E+4;
                 allianceMissions.push({ "id": missionId, "typeId": +$this.attr("mission_type_id"), "credits": missionCredits, "name": $("#mission_caption_" + missionId).contents().not($("#mission_caption_" + missionId).children()).text().replace(",", "").trim(), "address": $("#mission_address_" + missionId).text().trim() });
             }
@@ -209,6 +242,11 @@ async function alertVehicles() {
     var foundVehicles = [];
 
     for(var i in allianceMissions) {
+        if (stopInProgress) {
+            stopInProgress = false;
+            return;
+        }
+        
         await new Promise(resolve => setTimeout(resolve, getTimeoutPreference()));
         var mId = allianceMissions[i].id;
         $("#status_"+mId).text("suche ...");
@@ -231,7 +269,7 @@ async function alertVehicles() {
 
             if(v+1 == checkboxes.length) {
                 $("#tr_"+mId).removeClass("alert-info").addClass("alert-danger");
-                $("#status_"+mId).text("Aufgepasst! Keine Fahrzeuge!");
+                $("#status_"+mId).text("Fahrzeuge außer Reichweite oder nicht vorhanden!");
                 break;
             }
         }
@@ -261,8 +299,9 @@ async function alertVehicles() {
     }
 
    $("body").on("click", "#chilloutArea", function() {
-        $("#AfiliaModalBody").html(`<center><img src="https://feuerwehr-brelingen.de/wp/wp-content/uploads/2017/12/Weihnachten_2017.jpg" style="height:60%;width:60%"></center>`);
-        allianceMissions.length = 0;
+        if (allianceMissions.length === 0) {
+            $("#AfiliaModalBody").html(`<center><img src="https://www.feuerwehr-meschede.de/webseitendaten/images/stadt_brandschutz/Silvester_2019-2020.jpg" style="height:60%;width:60%"></center>`);
+        }
     });
 
     $("body").on("click", "#AfiliaScan", async function() {
@@ -311,6 +350,11 @@ async function alertVehicles() {
         setTimeoutPreference(timeoutValue);
 
         $("#AfiliaModalBody").html("<h3><center>Einstellungen gespeichert</center></h3>");
+    });
+
+    $("body").on("click", "#close", function() {
+        // Save the state when the "Schließen" button is clicked
+        saveState();
     });
 
 })();
