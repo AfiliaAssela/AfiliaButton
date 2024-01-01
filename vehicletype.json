@@ -1,6 +1,6 @@
 [
   {
-    "lastUpdate": 1702066172
+    "lastUpdate": 1704123869
   },
   {
     "id": 0,
@@ -1289,84 +1289,6 @@
     }
   },
   {
-    "id": 47,
-    "name": "Abrollbehälter-Rüst",
-    "short_name": "AB-Rüst",
-    "class": [
-      "heavy_rescue_vehicles"
-    ],
-    "class_alias": [
-      "Rüstwagen"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true
-    },
-    "prerequisites": {
-      "fire_stations": 1
-    }
-  },
-  {
-    "id": 48,
-    "name": "AB-Atemschutz",
-    "short_name": "AB-A",
-    "class": [
-      "mobile_air_vehicles"
-    ],
-    "class_alias": [
-      "Atemschutz"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true
-    },
-    "prerequisites": {
-      "fire_stations": 1
-    }
-  },
-  {
-    "id": 49,
-    "name": "AB-Öl",
-    "short_name": "AB-Öl",
-    "class": [
-      "gwoil"
-    ],
-    "class_alias": [
-      "Öl"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true
-    },
-    "prerequisites": {
-      "fire_stations": 1
-    }
-  },
-  {
     "id": 50,
     "name": "Gruppenkraftwagen",
     "short_name": "GruKw",
@@ -1464,35 +1386,6 @@
       18
     ],
     "additional": {
-      "qualification": [
-        "Dekon-P"
-      ]
-    },
-    "prerequisites": {
-      "fire_stations": 14
-    }
-  },
-  {
-    "id": 54,
-    "name": "AB-Dekon-P",
-    "short_name": "AB-Dekon-P",
-    "class": [
-      "hazmat_dekon"
-    ],
-    "class_alias": [
-      "Dekon-P"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true,
       "qualification": [
         "Dekon-P"
       ]
@@ -1698,34 +1591,7 @@
       "police_helicopter_stations": 1
     }
   },
-  {
-    "id": 62,
-    "name": "Abrollbehälter-Schlauch",
-    "short_name": "AB-Schlauch",
-    "class": [
-      "water_tankers"
-    ],
-    "class_alias": [
-      "Schlauchwagen"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true,
-      "water_bonus": 25
-    },
-    "prerequisites": {
-      "fire_stations": 7
-    }
-  },
-  {
+    {
     "id": 63,
     "name": "Gerätewagen Taucher",
     "short_name": "GW-Taucher",
@@ -1853,31 +1719,6 @@
     }
   },
   {
-    "id": 68,
-    "name": "Mehrzweckarbeitsboot mit Bugklappe auf Transport-Anhänger",
-    "short_name": "Anh MzAB",
-    "class": [
-      "boats"
-    ],
-    "class_alias": [
-      "Boote"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      9
-    ],
-    "additional": {
-      "trailer": true
-    },
-    "prerequisites": {
-      "wasserrettung": 1
-    }
-  },
-  {
     "id": 69,
     "name": "Tauchkraftwagen",
     "short_name": "TKW",
@@ -1929,35 +1770,6 @@
     },
     "prerequisites": {
       "wasserrettung": 1
-    }
-  },
-  {
-    "id": 71,
-    "name": "Abrollbehälter-Mehrzweckboot",
-    "short_name": "AB-MZB",
-    "class": [
-      "boats"
-    ],
-    "class_alias": [
-      "Boote"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true,
-      "qualification": [
-        "GW-Wasserrettung"
-      ]
-    },
-    "prerequisites": {
-      "fire_stations": 1
     }
   },
   {
@@ -2116,66 +1928,6 @@
     },
     "prerequisites": {
       "fire_stations": 1
-    }
-  },
-  {
-    "id": 77,
-    "name": "Abrollbehälter-Gefahrgut",
-    "short_name": "AB-Gefahrgut",
-    "class": [
-      "hazmat_vehicles"
-    ],
-    "class_alias": [
-      "Gefahrgut"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true,
-      "qualification": [
-        "GW-Gefahrgut"
-      ]
-    },
-    "prerequisites": {
-      "fire_stations": 11
-    }
-  },
-  {
-    "id": 78,
-    "name": "AB-Einsatzleitung",
-    "short_name": "AB-EL",
-    "class": [
-      "mobile_command_vehicles",
-      "battalion_chief_vehicles"
-    ],
-    "class_alias": [
-      "ELW 2",
-      "ELW 1"
-    ],
-    "cost": 6000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "trailer": true,
-      "qualification": [
-        "ELW 2"
-      ]
-    },
-    "prerequisites": {
-      "fire_stations": 13
     }
   },
   {
@@ -2980,29 +2732,6 @@
       "capacity": 10,
       "water": 2000,
       "pump_engine": 2000
-    },
-    "prerequisites": {
-      "fire_stations": 1
-    }
-  },
-  {
-    "id": 108,
-    "name": "Abrollbehälter Logistik",
-    "short_name": "AB-L",
-    "class": [],
-    "class_alias": [],
-    "cost": 7000,
-    "personal": {
-      "min": 0,
-      "max": 0
-    },
-    "building": [
-      0,
-      18
-    ],
-    "additional": {
-      "capacity": 30,
-      "trailer": true
     },
     "prerequisites": {
       "fire_stations": 1
