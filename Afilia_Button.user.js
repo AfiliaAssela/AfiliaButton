@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.0.7
+// @version      1.0.8
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -130,7 +130,7 @@ overflow-y: auto;
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&#x274C;</span>
                           </button>
-                          <h5 class="modal-title"><center>Guten Rutsch ins Jahr 2024!</center></h5>
+                          <h5 class="modal-title"><center>Kalteste Nacht? Pah, wir klicken weiter!</center></h5>
                           <div class="btn-group">
                             <a class="btn btn-success btn-xs" id="AfiliaScan">Scan</a>
                             <a class="btn btn-success btn-xs" id="AfiliaStart">Start</a>
@@ -311,7 +311,7 @@ async function alertVehicles() {
 
    $("body").on("click", "#chilloutArea", function() {
         if (allianceMissions.length === 0) {
-            $("#AfiliaModalBody").html(`<center><img src="https://www.feuerwehr-meschede.de/webseitendaten/images/stadt_brandschutz/Silvester_2019-2020.jpg" style="height:60%;width:60%"></center>`);
+            $("#AfiliaModalBody").html(`<center><img src="https://www.sfsg.de/fileadmin/_processed_/7/6/csm_Webseite_Post_Feuerwehr-im-Winter_01_f8d7a4d1a1.jpg" style="height:60%;width:60%"></center>`);
         }
     });
 
