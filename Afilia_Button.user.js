@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.0.9
+// @version      1.1.0
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
