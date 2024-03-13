@@ -196,6 +196,16 @@ overflow-y: auto;
             }
         });
 
+        $("#mission_list_sicherheitswache_alliance .missionSideBarEntry:not(.mission_deleted)").each(function() {
+            var $this = $(this);
+            var missionId = +$this.attr("id").replace(/\D+/g, "");
+            if (!$("#mission_participant_new_"+missionId).hasClass("hidden")) {
+                var missionInfos = aMissions.filter((obj) => obj.id == +$this.attr("mission_type_id"))[0];
+                var missionCredits = missionInfos ? (missionInfos.average_credits > 0 ? missionInfos.average_credits : 0) : 5E+4;
+                allianceMissions.push({ "id": missionId, "typeId": +$this.attr("mission_type_id"), "credits": missionCredits, "name": $("#mission_caption_" + missionId).contents().not($("#mission_caption_" + missionId).children()).text().replace(",", "").trim(), "address": $("#mission_address_" + missionId).text().trim() });
+            }
+        })
+
         if(allianceMissions.length >= 2) allianceMissions.sort((a, b) => a.credits > b.credits ? -1 : 1);
     }
 
