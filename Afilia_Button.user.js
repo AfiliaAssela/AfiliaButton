@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.1.0
+// @version      1.1.1
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -320,7 +320,7 @@ async function alertVehicles() {
 
    $("body").on("click", "#chilloutArea", function() {
         if (allianceMissions.length === 0) {
-            $("#AfiliaModalBody").html(`<center><img src="https://i.imgur.com/VG1D6g1.jpeg" style="height:60%;width:60%"></center>`);
+            $("#AfiliaModalBody").html(`<center><img src="https://www.feuerwehrmagazin.de/app/uploads/2018/07/Cartoon-Fu%C3%9Fball-WM-Feuerwehr.jpg" style="height:60%;width:60%"></center>`);
         }
     });
 
