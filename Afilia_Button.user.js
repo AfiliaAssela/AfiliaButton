@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.1.2
+// @version      1.1.3
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -48,13 +48,22 @@
         return localStorage.AfiliaTimeout || 0;
     }
 
+    function setMissionListPreference(isActive) {
+        localStorage.AfiliaMissionListActive = isActive ? 'true' : 'false';
+    }
+
+    function getMissionListPreference() {
+        return localStorage.AfiliaMissionListActive === 'true';
+    }
+
     // Save Modal State
     function saveState() {
         localStorage.AfiliaState = JSON.stringify({
             config: config,
             vehicles: aVehicleTypes,
             missions: aMissions,
-            allianceMissions: allianceMissions
+            allianceMissions: allianceMissions,
+            missionListActive: getMissionListPreference()
         });
     }
     // Load Modal State
@@ -66,6 +75,7 @@
             aVehicleTypes = parsedState.vehicles;
             aMissions = parsedState.missions;
             allianceMissions = parsedState.allianceMissions;
+            setMissionListPreference(parsedState.missionListActive);
         }
     }
     // Get the version data
@@ -101,7 +111,7 @@
 
     var aVehicleTypes = JSON.parse(sessionStorage.aVehicleTypesNew).value;
     var aMissions = JSON.parse(sessionStorage.aMissions).value;
-    var config = localStorage.AfiliaConfig ? JSON.parse(localStorage.AfiliaConfig) : {"credits": 0, "vehicles": []};
+    var config = localStorage.AfiliaConfig ? JSON.parse(localStorage.AfiliaConfig) : {"credits": 0, "vehicles": [], "missionListActive": true};
     var allianceMissions = [];
 
     GM_addStyle(`.modal {
@@ -176,15 +186,18 @@ overflow-y: auto;
                 allianceMissions.push({ "id": missionId, "typeId": +$this.attr("mission_type_id"), "credits": missionCredits, "name": $("#mission_caption_" + missionId).contents().not($("#mission_caption_" + missionId).children()).text().replace(",", "").trim(), "address": $("#mission_address_" + missionId).text().trim() });
             }
         });
-               $("#mission_list  > .missionSideBarEntry:not(.mission_deleted)").each(function() {
-            var $this = $(this);
-            var missionId = +$this.attr("id").replace(/\D+/g,"");
-            if(!$("#mission_participant_new_"+missionId).hasClass("hidden")) {
-                var missionInfos = aMissions.filter((obj) => obj.id == +$this.attr("mission_type_id"))[0];
-                var missionCredits = missionInfos ? (missionInfos.average_credits > 0 ? missionInfos.average_credits : 0) : 5E+4;
-                allianceMissions.push({ "id": missionId, "typeId": +$this.attr("mission_type_id"), "credits": missionCredits, "name": $("#mission_caption_" + missionId).contents().not($("#mission_caption_" + missionId).children()).text().replace(",", "").trim(), "address": $("#mission_address_" + missionId).text().trim() });
-            }
-        });
+        
+        if (config.missionListActive) {
+            $("#mission_list  > .missionSideBarEntry:not(.mission_deleted)").each(function() {
+                var $this = $(this);
+                var missionId = +$this.attr("id").replace(/\D+/g,"");
+                if(!$("#mission_participant_new_"+missionId).hasClass("hidden")) {
+                    var missionInfos = aMissions.filter((obj) => obj.id == +$this.attr("mission_type_id"))[0];
+                    var missionCredits = missionInfos ? (missionInfos.average_credits > 0 ? missionInfos.average_credits : 0) : 5E+4;
+                    allianceMissions.push({ "id": missionId, "typeId": +$this.attr("mission_type_id"), "credits": missionCredits, "name": $("#mission_caption_" + missionId).contents().not($("#mission_caption_" + missionId).children()).text().replace(",", "").trim(), "address": $("#mission_address_" + missionId).text().trim() });
+                }
+            });
+        }
 
         $("#mission_list_sicherheitswache .missionSideBarEntry:not(.mission_deleted)").each(function() {
             var $this = $(this);
@@ -335,40 +348,41 @@ async function alertVehicles() {
 
     $("body").on("click", "#AfiliaPreferences", function() {
         var arrVehicles = [];
-
-        for(var i in aVehicleTypes) {
+        for (var i in aVehicleTypes) {
             arrVehicles.push(aVehicleTypes[i].short_name);
         }
         arrVehicles.sort((a, b) => a.toUpperCase() > b.toUpperCase() ? 1 : -1);
-
-        $("#AfiliaModalBody")
-            .html(`<span>Einsätze ab </span><input type="text" class="form-control form-control-sm" value="${config.credits}" id="AfiliaCredits" style="width:5em;height:22px;display:inline"><span> Credits anzeigen</span>
-                   <br>
-                   <br>
-                   <label for="AfiliaTimeout">Timeout (ms): </label><input type="text" class="form-control form-control-sm" value="${getTimeoutPreference()}" id="AfiliaTimeout" style="width:5em;height:22px;display:inline"><span> ms</span>
-                   <br>
-                   <br>
-                   <label for="AfiliaVehicleTypes">Fahrzeugtypen (Mehrfachauswahl mit Strg + Klick)</label>
-                   <select multiple class="form-control" id="AfiliaVehicleTypes" style="height:20em;width:40em"></select>
-                   <br>
-                   <br>
-                   <a class="btn btn-success" id="AfiliaBtnSave">Speichern</a>`);
-
-        for(i in arrVehicles) {
+    
+        $("#AfiliaModalBody").html(`
+            <span>Einsätze ab </span><input type="text" class="form-control form-control-sm" value="${config.credits}" id="AfiliaCredits" style="width:5em;height:22px;display:inline"><span> Credits anzeigen</span>
+            <br><br>
+            <label for="AfiliaTimeout">Timeout (ms): </label><input type="text" class="form-control form-control-sm" value="${getTimeoutPreference()}" id="AfiliaTimeout" style="width:5em;height:22px;display:inline"><span> ms</span>
+            <br><br>
+            <label for="AfiliaMissionListActive">Eigene Einsätze berücksichtigen?</label>
+            <input type="checkbox" id="AfiliaMissionListActive" ${config.missionListActive ? 'checked' : ''}>
+            <br><br>
+            <label for="AfiliaVehicleTypes">Fahrzeugtypen (Mehrfachauswahl mit Strg + Klick)</label>
+            <select multiple class="form-control" id="AfiliaVehicleTypes" style="height:20em;width:40em"></select>
+            <br><br>
+            <a class="btn btn-success" id="AfiliaBtnSave">Speichern</a>
+        `);
+    
+        for (i in arrVehicles) {
             $("#AfiliaVehicleTypes").append(`<option>${arrVehicles[i]}</option>`);
         }
-
+    
         $("#AfiliaVehicleTypes").val(mapVehicles(config.vehicles, "name"));
     });
 
     $("body").on("click", "#AfiliaBtnSave", function() {
         config.credits = +$("#AfiliaCredits").val();
         config.vehicles = mapVehicles($("#AfiliaVehicleTypes").val(), "type");
+        config.missionListActive = $("#AfiliaMissionListActive").is(":checked");
         localStorage.AfiliaConfig = JSON.stringify(config);
-
+    
         var timeoutValue = $("#AfiliaTimeout").val();
         setTimeoutPreference(timeoutValue);
-
+    
         $("#AfiliaModalBody").html("<h3><center>Einstellungen gespeichert</center></h3>");
     });
 
