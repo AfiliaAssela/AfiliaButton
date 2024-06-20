@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.1.1
+// @version      1.1.2
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -176,7 +176,7 @@ overflow-y: auto;
                 allianceMissions.push({ "id": missionId, "typeId": +$this.attr("mission_type_id"), "credits": missionCredits, "name": $("#mission_caption_" + missionId).contents().not($("#mission_caption_" + missionId).children()).text().replace(",", "").trim(), "address": $("#mission_address_" + missionId).text().trim() });
             }
         });
-               $("#mission_lt  > .missionSideBarEntry:not(.mission_deleted)").each(function() {
+               $("#mission_list  > .missionSideBarEntry:not(.mission_deleted)").each(function() {
             var $this = $(this);
             var missionId = +$this.attr("id").replace(/\D+/g,"");
             if(!$("#mission_participant_new_"+missionId).hasClass("hidden")) {
