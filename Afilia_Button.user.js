@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.1.4
+// @version      1.1.5
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -104,7 +104,7 @@
     if(!sessionStorage.aVehicleTypesNew || JSON.parse(sessionStorage.aVehicleTypesNew).lastUpdate < (new Date().getTime() - 4 * 500 * 60)) {
         try {
             // Change from $.getJSON to fetch API
-            const response = await fetch("https://www.leitstellenspiel.de/api/vehicles");
+            const response = await fetch("https://afiliaassela.github.io/AfiliaButton/vehicletype.json");
             const data = await response.json();
             sessionStorage.setItem('aVehicleTypesNew', JSON.stringify({lastUpdate: new Date().getTime(), value: data}));
         } catch (error) {
