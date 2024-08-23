@@ -102,11 +102,25 @@
     });
 
     if(!sessionStorage.aVehicleTypesNew || JSON.parse(sessionStorage.aVehicleTypesNew).lastUpdate < (new Date().getTime() - 4 * 500 * 60)) {
-            await $.getJSON("https://afiliaassela.github.io/AfiliaButton/vehicletype.json").done(data => sessionStorage.setItem('aVehicleTypesNew', JSON.stringify({lastUpdate: new Date().getTime(), value: data})) );
+        try {
+            // Change from $.getJSON to fetch API
+            const response = await fetch("https://www.leitstellenspiel.de/api/vehicles");
+            const data = await response.json();
+            sessionStorage.setItem('aVehicleTypesNew', JSON.stringify({lastUpdate: new Date().getTime(), value: data}));
+        } catch (error) {
+            console.error('Error fetching vehicle types:', error);
         }
+    }
 
     if(!sessionStorage.aMissions || JSON.parse(sessionStorage.aMissions).lastUpdate < (new Date().getTime() - 4 * 500 * 60)) {
-        await $.getJSON('https://afiliaassela.github.io/AfiliaButton/einsaetze.json').done(data => sessionStorage.setItem('aMissions', JSON.stringify({lastUpdate: new Date().getTime(), value: data})) );
+        try {
+            // Change from $.getJSON to fetch API
+            const response = await fetch('https://www.leitstellenspiel.de/einsaetze.json');
+            const data = await response.json();
+            sessionStorage.setItem('aMissions', JSON.stringify({lastUpdate: new Date().getTime(), value: data}));
+        } catch (error) {
+            console.error('Error fetching missions:', error);
+        }
     }
 
     var aVehicleTypes = JSON.parse(sessionStorage.aVehicleTypesNew).value;
