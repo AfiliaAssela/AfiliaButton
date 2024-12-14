@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Afilia Button
-// @version      1.1.5
+// @version      1.1.6
 // @author       Afilia
 // @include      *://www.leitstellenspiel.de/*
 // @grant        GM_addStyle
@@ -154,7 +154,7 @@ overflow-y: auto;
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&#x274C;</span>
                           </button>
-                          <h5 class="modal-title"><center>Naja schnell und lange laufen können se aber :).</center></h5>
+                          <h5 class="modal-title"><center>Frohe Weihnachten und guten Rutsch.</center></h5>
                           <div class="btn-group">
                             <a class="btn btn-success btn-xs" id="AfiliaScan">Scan</a>
                             <a class="btn btn-success btn-xs" id="AfiliaStart">Start</a>
@@ -347,7 +347,7 @@ async function alertVehicles() {
 
    $("body").on("click", "#chilloutArea", function() {
         if (allianceMissions.length === 0) {
-            $("#AfiliaModalBody").html(`<center><img src="https://www.feuerwehrmagazin.de/app/uploads/2018/07/Cartoon-Fu%C3%9Fball-WM-Feuerwehr.jpg" style="height:60%;width:60%"></center>`);
+            $("#AfiliaModalBody").html(`<center><img src="https://img.myredro.de/poster/unglaublicher-netter-weihnachtszug-700-79466198.jpg" style="height:60%;width:60%"></center>`);
         }
     });
 
