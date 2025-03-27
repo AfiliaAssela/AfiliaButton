@@ -1,6 +1,6 @@
 [
   {
-    "lastUpdate": 1743103859
+    "lastUpdate": 1743104468
   },
   {
     "id": 0,
@@ -2780,5 +2780,32 @@
     "building": [
       26
     ]
+  },
+  {
+    "id": 163,
+    "name": "HLF Schiene",
+    "short_name": "HLF Schiene",
+    "class": [
+      "firetrucks"
+    ],
+    "class_alias":[
+      "Löschfahrzeuge"
+    ],
+    "cost": 30000,
+    "personal": {
+      "min": 1,
+      "max": 9
+    },
+    "building":[
+      0,
+      18
+    ],
+    "additional": {
+      "water": 1460,
+      "pump_engine": 2400
+    },
+    "prerequisites": {
+      "fire_stations": 1
+    }
   }
 ]
