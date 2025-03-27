@@ -2762,5 +2762,23 @@
     "prerequisites": {
       "fire_stations": 1
     }
+  },
+  {
+    "id": 160,
+    "name": "Seenotrettungsboot",
+    "short_name": "SNR-Boot",
+    "class": [
+      "boats"
+    ],
+    "class_alias": [
+      "Boote"
+    ],
+    "cost": 50000,
+    "personal": {
+      "max": 2
+    },
+    "building": [
+      26
+    ]
   }
 ]
