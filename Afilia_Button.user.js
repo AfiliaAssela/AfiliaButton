@@ -238,7 +238,7 @@ overflow-y: auto;
 
     function writeTable() {
         var sumCredits = 0; // Initialisiere Creditzähler und setze ihn auf 0
-        allianceMissions = allianceMissions.filter(e => e.credits >= config.credits);
+        allianceMissions = allianceMissions.filter(e => e.credits >= config.minCredits && e.credits <= configmaxCredits);
 
         var intoTable =
             `<table class="table">
@@ -368,7 +368,11 @@ async function alertVehicles() {
         arrVehicles.sort((a, b) => a.toUpperCase() > b.toUpperCase() ? 1 : -1);
     
         $("#AfiliaModalBody").html(`
-            <span>Einsätze ab </span><input type="text" class="form-control form-control-sm" value="${config.credits}" id="AfiliaCredits" style="width:5em;height:22px;display:inline"><span> Credits anzeigen</span>
+            <span>Einsätze ab </span>
+            <input type="text" class="form-control form-control-sm" value="${config.minCredits}" id="AfiliaMinCredits" style="width:5em;height:22px;display:inline">
+            <span bis </span>
+            <input type="text" class="form-control form-control-sm" value="${config.maxCredits}" id="AfiliaMaxCredits" style="width:5em;height:22px;display:inline">
+            <span> Credits anzeigen</span>
             <br><br>
             <label for="AfiliaTimeout">Timeout (ms): </label><input type="text" class="form-control form-control-sm" value="${getTimeoutPreference()}" id="AfiliaTimeout" style="width:5em;height:22px;display:inline"><span> ms</span>
             <br><br>
@@ -389,7 +393,8 @@ async function alertVehicles() {
     });
 
     $("body").on("click", "#AfiliaBtnSave", function() {
-        config.credits = +$("#AfiliaCredits").val();
+        config.mixCredits = +$("#AfiliaMinCredits").val();
+        config.maxCredits = +$("#AfiliaMaxCredits").val();
         config.vehicles = mapVehicles($("#AfiliaVehicleTypes").val(), "type");
         config.missionListActive = $("#AfiliaMissionListActive").is(":checked");
         localStorage.AfiliaConfig = JSON.stringify(config);
