@@ -238,7 +238,7 @@ overflow-y: auto;
 
     function writeTable() {
         var sumCredits = 0; // Initialisiere Creditzähler und setze ihn auf 0
-        allianceMissions = allianceMissions.filter(e => e.credits >= config.minCredits && e.credits <= configmaxCredits);
+        allianceMissions = allianceMissions.filter(e => e.credits >= config.minCredits && e.credits <= config.maxCredits);
 
         var intoTable =
             `<table class="table">
@@ -369,9 +369,9 @@ async function alertVehicles() {
     
         $("#AfiliaModalBody").html(`
             <span>Einsätze ab </span>
-            <input type="text" class="form-control form-control-sm" value="${config.minCredits}" id="AfiliaMinCredits" style="width:5em;height:22px;display:inline">
-            <span bis </span>
-            <input type="text" class="form-control form-control-sm" value="${config.maxCredits}" id="AfiliaMaxCredits" style="width:5em;height:22px;display:inline">
+            <input type="text" class="form-control form-control-sm" value="${config.minCredits || 0}" id="AfiliaMinCredits" style="width:5em;height:22px;display:inline">
+            <span> bis </span>
+            <input type="text" class="form-control form-control-sm" value="${config.maxCredits || 1000000}" id="AfiliaMaxCredits" style="width:5em;height:22px;display:inline">
             <span> Credits anzeigen</span>
             <br><br>
             <label for="AfiliaTimeout">Timeout (ms): </label><input type="text" class="form-control form-control-sm" value="${getTimeoutPreference()}" id="AfiliaTimeout" style="width:5em;height:22px;display:inline"><span> ms</span>
@@ -393,7 +393,7 @@ async function alertVehicles() {
     });
 
     $("body").on("click", "#AfiliaBtnSave", function() {
-        config.mixCredits = +$("#AfiliaMinCredits").val();
+        config.minCredits = +$("#AfiliaMinCredits").val();
         config.maxCredits = +$("#AfiliaMaxCredits").val();
         config.vehicles = mapVehicles($("#AfiliaVehicleTypes").val(), "type");
         config.missionListActive = $("#AfiliaMissionListActive").is(":checked");
